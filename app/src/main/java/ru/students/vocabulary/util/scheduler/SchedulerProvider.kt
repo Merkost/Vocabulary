@@ -1,4 +1,4 @@
-package ru.students.vocabulary.scheduler
+package ru.students.vocabulary.util.scheduler
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
