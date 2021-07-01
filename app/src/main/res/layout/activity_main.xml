@@ -58,7 +58,7 @@
                 android:id="@+id/error_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/error_textview_stub"/>
+                android:text="@string/error_stub"/>
 
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/reload_button"
