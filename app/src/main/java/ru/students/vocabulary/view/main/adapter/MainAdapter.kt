@@ -1,15 +1,18 @@
-package geekbrains.ru.translator.view.main.adapter
+package ru.students.vocabulary.view.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.students.vocabulary.model.data.DataModel
+import ru.students.vocabulary.utils.convertMeaningsToString
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
 import ru.students.vocabulary.R
 
-class MainAdapter(private var onListItemClickListener: OnListItemClickListener, private var data: List<DataModel>) :
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+
+    private var data: List<DataModel> = arrayListOf()
 
     fun setData(data: List<DataModel>) {
         this.data = data
@@ -24,7 +27,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data.get(position))
+        holder.bind(data[position])
     }
 
     override fun getItemCount(): Int {
@@ -36,8 +39,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener, 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.header_textview_recycler_item.text = data.text
-                itemView.description_textview_recycler_item.text = data.meanings?.get(0)?.translation?.translation
-
+                itemView.description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }
