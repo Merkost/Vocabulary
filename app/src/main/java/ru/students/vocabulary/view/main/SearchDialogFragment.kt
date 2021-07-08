@@ -1,4 +1,4 @@
-package ru.students.vocabulary.main
+package ru.students.vocabulary.view.main
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,13 +6,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.search_dialog_fragment.*
 import ru.students.vocabulary.R
-import ru.students.vocabulary.getEmptyString
 
 class SearchDialogFragment : BottomSheetDialogFragment() {
 
