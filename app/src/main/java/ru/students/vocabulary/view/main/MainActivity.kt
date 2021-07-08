@@ -15,10 +15,12 @@ import ru.students.vocabulary.view.main.adapter.MainAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.students.vocabulary.R
+import ru.students.vocabulary.utils.convertMeaningsToString
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     override lateinit var model: MainViewModel
+    // Передаём в адаптер слушатель нажатия на список
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
     private val fabClickListener: View.OnClickListener =
         View.OnClickListener {
@@ -30,6 +32,15 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
                 Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        this@MainActivity,
+                        data.text!!,
+                        convertMeaningsToString(data.meanings!!),
+                        data.meanings[0].imageUrl
+                    )
+                )
+
             }
         }
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
