@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.students.vocabulary.model.data.DataModel
-import ru.students.vocabulary.utils.convertMeaningsToString
+import ru.students.repository.utils.convertMeaningsToString
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
 import ru.students.vocabulary.R
 

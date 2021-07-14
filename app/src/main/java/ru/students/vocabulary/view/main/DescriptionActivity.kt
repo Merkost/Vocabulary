@@ -16,9 +16,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_description.*
+import ru.students.utils.network.isOnline
+import ru.students.utils.ui.AlertDialogFragment
 import ru.students.vocabulary.R
-import ru.students.vocabulary.utils.network.isOnline
-import ru.students.vocabulary.utils.ui.AlertDialogFragment
 
 class DescriptionActivity : AppCompatActivity() {
 

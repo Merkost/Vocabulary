@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.main.DescriptionActivity"/>
-        <activity android:name=".view.main.history.HistoryActivity"/>
+        <activity android:name="ru.students.historyscreen.HistoryActivity"/>
     </application>
 
 </manifest>
