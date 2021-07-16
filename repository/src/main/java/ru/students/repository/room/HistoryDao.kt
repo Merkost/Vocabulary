@@ -6,7 +6,7 @@ import androidx.room.*
 interface HistoryDao {
     // Получить весь список слов
     @Query("SELECT * FROM HistoryEntity")
-    fun all(): List<HistoryEntity>
+    suspend fun all(): List<HistoryEntity>
     // Получить конкретное слово
     @Query("SELECT * FROM HistoryEntity WHERE word LIKE :word")
     suspend fun getDataByWord(word: String): HistoryEntity

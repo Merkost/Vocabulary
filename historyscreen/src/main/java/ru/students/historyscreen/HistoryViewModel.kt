@@ -2,11 +2,12 @@ package ru.students.historyscreen
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
-import ru.students.vocabulary.model.data.AppState
+import ru.students.core.viewmodel.BaseViewModel
+import ru.students.model.data.AppState
 import ru.students.repository.utils.parseLocalSearchResults
 
 class HistoryViewModel(private val interactor: HistoryInteractor) :
-    ru.students.core.viewmodel.BaseViewModel<AppState>() {
+    BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
 
@@ -29,7 +30,7 @@ class HistoryViewModel(private val interactor: HistoryInteractor) :
     }
 
     override fun onCleared() {
-        _mutableLiveData.value = AppState.Success(null)//Set View to original state in onStop
+        _mutableLiveData.value = AppState.Success(null)//Set View to original state
         super.onCleared()
     }
 }

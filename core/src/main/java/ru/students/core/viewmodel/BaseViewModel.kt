@@ -2,7 +2,7 @@ package ru.students.core.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(

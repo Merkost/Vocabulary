@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import ru.students.vocabulary.model.data.DataModel
 import kotlinx.android.synthetic.main.loading_layout.*
 import ru.students.utils.network.isOnline
@@ -83,14 +83,12 @@ abstract class BaseActivity<T : AppState, I : ru.students.core.viewmodel.Interac
         private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
     }
 
-
-
     private fun showViewWorking() {
-        loading_frame_layout.visibility = View.GONE
+        loading_frame_layout_history.visibility = View.GONE
     }
 
     private fun showViewLoading() {
-        loading_frame_layout.visibility = View.VISIBLE
+        loading_frame_layout_history.visibility = View.VISIBLE
     }
 
 }

@@ -32,6 +32,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dynamicFeatures = [Modules.historyScreen]
 }
 
 dependencies {
@@ -41,14 +42,12 @@ dependencies {
     implementation project(Modules.model)
     implementation project(Modules.repository)
     implementation project(Modules.utils)
-    implementation project(Modules.historyScreen) //Feature
 
     //AndroidX
     implementation Tools.multidex
     implementation Design.appcompat
 
     //Design
-    //You should not use the com.android.support and com.google.android.material dependencies in your app at the same time
     implementation Design.material
     implementation Design.swipe_refresh_layout
 
@@ -73,6 +72,9 @@ dependencies {
     //Glide
     implementation Glide.glide
     kapt Glide.glide_compiler
+
+    //Google
+    implementation Google.core
 
     //Test
     testImplementation TestImpl.junit

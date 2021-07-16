@@ -1,6 +1,6 @@
 package ru.students.vocabulary.view.main
 
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import ru.students.vocabulary.model.data.DataModel
 import ru.students.repository.repository.Repository
 import ru.students.repository.repository.RepositoryLocal
