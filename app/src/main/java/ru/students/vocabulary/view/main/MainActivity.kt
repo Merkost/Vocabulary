@@ -1,21 +1,18 @@
 package ru.students.vocabulary.view.main
 
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
@@ -25,14 +22,15 @@ import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import ru.students.model.data.AppState
-import ru.students.vocabulary.model.data.DataModel
 import ru.students.vocabulary.view.main.adapter.MainAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
+import ru.students.model.data.SearchResultDto
+import ru.students.model.data.userdata.DataModel
+import ru.students.repository.utils.convertMeaningsToSingleString
 import ru.students.vocabulary.R
-import ru.students.repository.utils.convertMeaningsToString
-import ru.students.utils.network.isOnline
 import ru.students.vocabulary.di.injectDependencies
+import ru.students.vocabulary.view.viewById
 
 private const val HISTORY_ACTIVITY_PATH = "ru.students.historyscreen.HistoryActivity"
 private const val HISTORY_ACTIVITY_FEATURE_NAME = "historyscreen"
@@ -45,6 +43,11 @@ class MainActivity : ru.students.core.BaseActivity<AppState, MainInteractor>() {
     private lateinit var splitInstallManager: SplitInstallManager
     private lateinit var appUpdateManager: AppUpdateManager
 
+    override val layoutRes = R.layout.activity_main
+
+    private val mainActivityRecyclerview by viewById<RecyclerView>(R.id.main_activity_recyclerview)
+    private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
+
     // Передаём в адаптер слушатель нажатия на список
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
     private val fabClickListener: View.OnClickListener =
@@ -56,33 +59,25 @@ class MainActivity : ru.students.core.BaseActivity<AppState, MainInteractor>() {
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
                 startActivity(
                     DescriptionActivity.getIntent(
                         this@MainActivity,
-                        data.text!!,
-                        convertMeaningsToString(data.meanings!!),
-                        data.meanings!![0].imageUrl
+                        data.text,
+                        convertMeaningsToSingleString(data.meanings),
+                        data.meanings[0].imageUrl
                     )
                 )
-
             }
         }
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = isOnline(applicationContext)
-                if (isNetworkAvailable) {
-                    model.getData(searchWord, isNetworkAvailable)
-                } else {
-                    showNoInternetConnectionDialog()
-                }
+                model.getData(searchWord, isNetworkAvailable)
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         checkForUpdates()
         iniViewModel()
         initViews()
@@ -156,15 +151,15 @@ class MainActivity : ru.students.core.BaseActivity<AppState, MainInteractor>() {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
         injectDependencies()
-        val viewModel: MainViewModel by viewModel()
+        val viewModel: MainViewModel by currentScope.inject()
         model = viewModel
         model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
     }
 
     private fun initViews() {
-        search_fab.setOnClickListener(fabClickListener)
-        main_activity_recyclerview.layoutManager = LinearLayoutManager(applicationContext)
-        main_activity_recyclerview.adapter = adapter
+        searchFAB.setOnClickListener(fabClickListener)
+        mainActivityRecyclerview.layoutManager = LinearLayoutManager(applicationContext)
+        mainActivityRecyclerview.adapter = adapter
     }
 
     companion object {

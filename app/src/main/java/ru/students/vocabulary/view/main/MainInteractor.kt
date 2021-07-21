@@ -1,23 +1,24 @@
 package ru.students.vocabulary.view.main
 
+import ru.students.core.viewmodel.Interactor
 import ru.students.model.data.AppState
-import ru.students.vocabulary.model.data.DataModel
+import ru.students.model.data.SearchResultDto
 import ru.students.repository.repository.Repository
 import ru.students.repository.repository.RepositoryLocal
+import ru.students.repository.utils.mapSearchResultToResult
 
 class MainInteractor(
-    private val repositoryRemote: Repository<List<DataModel>>,
-    private val repositoryLocal: RepositoryLocal<List<DataModel>>
-) : ru.students.core.viewmodel.Interactor<AppState> {
+    private val repositoryRemote: Repository<List<SearchResultDto>>,
+    private val repositoryLocal: RepositoryLocal<List<SearchResultDto>>
+) : Interactor<AppState> {
 
     override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
         val appState: AppState
-        // Теперь полученное слово мы сохраняем в БД
         if (fromRemoteSource) {
-            appState = AppState.Success(repositoryRemote.getData(word))
+            appState = AppState.Success(mapSearchResultToResult(repositoryRemote.getData(word)))
             repositoryLocal.saveToDB(appState)
         } else {
-            appState = AppState.Success(repositoryLocal.getData(word))
+            appState = AppState.Success(mapSearchResultToResult(repositoryLocal.getData(word)))
         }
         return appState
     }

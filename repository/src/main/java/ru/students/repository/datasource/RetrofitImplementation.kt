@@ -1,21 +1,24 @@
 package ru.students.repository.datasource
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import ru.students.vocabulary.model.data.DataModel
+import ru.students.model.data.userdata.DataModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.students.model.data.SearchResultDto
+import ru.students.repository.api.ApiService
+import ru.students.repository.api.BaseInterceptor
 
-class RetrofitImplementation : DataSource<List<DataModel>> {
+class RetrofitImplementation : DataSource<List<SearchResultDto>> {
 
-    override suspend fun getData(word: String): List<DataModel> {
-        return getService(ru.students.repository.api.BaseInterceptor.interceptor).searchAsync(word).await()
+    override suspend fun getData(word: String): List<SearchResultDto> {
+        return getService(BaseInterceptor.interceptor).searchAsync(word).await()
     }
 
-    private fun getService(interceptor: Interceptor): ru.students.repository.api.ApiService {
-        return createRetrofit(interceptor).create(ru.students.repository.api.ApiService::class.java)
+    private fun getService(interceptor: Interceptor): ApiService {
+        return createRetrofit(interceptor).create(ApiService::class.java)
     }
 
     private fun createRetrofit(interceptor: Interceptor): Retrofit {
