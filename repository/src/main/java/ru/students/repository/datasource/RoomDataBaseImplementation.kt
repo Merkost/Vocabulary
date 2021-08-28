@@ -1,24 +1,19 @@
 package ru.students.repository.datasource
 
 import ru.students.model.data.AppState
-import ru.students.vocabulary.model.data.DataModel
+import ru.students.model.data.SearchResultDto
+import ru.students.model.data.userdata.DataModel
+import ru.students.repository.convertDataModelSuccessToEntity
+import ru.students.repository.mapHistoryEntityToSearchResult
 import ru.students.repository.room.HistoryDao
-import ru.students.repository.utils.convertDataModelSuccessToEntity
-import ru.students.repository.utils.mapHistoryEntityToSearchResult
 
 class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
-    DataSourceLocal<List<DataModel>> {
+    DataSourceLocal<List<SearchResultDto>> {
 
-    // Возвращаем список всех слов в виде понятного для Activity
-    // List<SearchResult>
-    override suspend fun getData(word: String): List<DataModel> {
-        // Метод mapHistoryEntityToSearchResult описан во вспомогательном
-        // классе SearchResultParser, в котором есть и другие методы для
-        // трансформации данных
+    override suspend fun getData(word: String): List<SearchResultDto> {
         return mapHistoryEntityToSearchResult(historyDao.all())
     }
 
-    // Метод сохранения слова в БД. Он будет использоваться в интеракторе
     override suspend fun saveToDB(appState: AppState) {
         convertDataModelSuccessToEntity(appState)?.let {
             historyDao.insert(it)

@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.students.vocabulary.model.data.DataModel
-import ru.students.repository.utils.convertMeaningsToString
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
+import ru.students.model.data.userdata.DataModel
+import ru.students.repository.utils.convertMeaningsToSingleString
 import ru.students.vocabulary.R
 
 class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
@@ -39,7 +39,8 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener) 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.header_textview_recycler_item.text = data.text
-                itemView.description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
+                itemView.description_textview_recycler_item.text =
+                    convertMeaningsToSingleString(data.meanings)
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }

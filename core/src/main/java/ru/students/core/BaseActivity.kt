@@ -1,32 +1,53 @@
 package ru.students.core
 
+import android.content.Intent
+import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import ru.students.model.data.AppState
-import ru.students.vocabulary.model.data.DataModel
+import ru.students.model.data.userdata.DataModel
 import kotlinx.android.synthetic.main.loading_layout.*
-import ru.students.utils.network.isOnline
 import ru.students.utils.ui.AlertDialogFragment
+import ru.students.vocabulary.utils.network.OnlineLiveData
 
-abstract class BaseActivity<T : AppState, I : ru.students.core.viewmodel.Interactor<T>> : AppCompatActivity() {
+abstract class BaseActivity<T : AppState, I : ru.students.core.viewmodel.Interactor<T>> :
+    AppCompatActivity() {
 
     abstract val model: ru.students.core.viewmodel.BaseViewModel<T>
 
-    protected var isNetworkAvailable: Boolean = false
+    protected var isNetworkAvailable: Boolean = true
+    protected abstract val layoutRes: Int
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        isNetworkAvailable = isOnline(applicationContext)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(layoutRes)
+        subscribeToNetworkChange()
     }
 
-    override fun onResume() {
-        super.onResume()
-        isNetworkAvailable = isOnline(applicationContext)
-        if (!isNetworkAvailable && isDialogNull()) {
-            showNoInternetConnectionDialog()
-        }
+    private fun subscribeToNetworkChange() {
+        OnlineLiveData(this).observe(
+            this@BaseActivity,
+            Observer<Boolean> {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+//                    Toast.makeText(
+//                        this@BaseActivity,
+//                        R.string.dialog_message_device_is_offline,
+//                        Toast.LENGTH_LONG
+//                    ).show()
+                    Snackbar.make(
+                        findViewById(layoutRes),
+                        R.string.dialog_message_device_is_offline,
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Connect") {
+                        startActivity(Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                    }.show()
+                }
+            })
     }
 
     protected fun showNoInternetConnectionDialog() {
@@ -36,8 +57,9 @@ abstract class BaseActivity<T : AppState, I : ru.students.core.viewmodel.Interac
         )
     }
 
-    protected fun showAlertDialog(title: String?, message: String?) {
-        AlertDialogFragment.newInstance(title, message).show(supportFragmentManager, DIALOG_FRAGMENT_TAG)
+    private fun showAlertDialog(title: String?, message: String?) {
+        AlertDialogFragment.newInstance(title, message)
+            .show(supportFragmentManager, DIALOG_FRAGMENT_TAG)
     }
 
     private fun isDialogNull(): Boolean {

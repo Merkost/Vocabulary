@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
 import ru.students.core.viewmodel.BaseViewModel
 import ru.students.model.data.AppState
-import ru.students.repository.utils.parseLocalSearchResults
 
 class HistoryViewModel(private val interactor: HistoryInteractor) :
     BaseViewModel<AppState>() {
