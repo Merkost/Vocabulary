@@ -1,6 +1,6 @@
 package ru.students.repository.datasource
 
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import ru.students.vocabulary.model.data.DataModel
 import ru.students.repository.room.HistoryDao
 import ru.students.repository.utils.convertDataModelSuccessToEntity

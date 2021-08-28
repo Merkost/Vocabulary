@@ -1,4 +1,6 @@
-package ru.students.vocabulary.model.data
+package ru.students.model.data
+
+import ru.students.vocabulary.model.data.DataModel
 
 
 sealed class AppState {

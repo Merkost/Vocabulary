@@ -1,6 +1,6 @@
 package ru.students.repository.utils
 
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import ru.students.vocabulary.model.data.DataModel
 import ru.students.vocabulary.model.data.Meanings
 import ru.students.repository.room.HistoryEntity

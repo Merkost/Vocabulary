@@ -1,6 +1,7 @@
 package ru.students.vocabulary.di
 
 import androidx.room.Room
+import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import ru.students.vocabulary.model.data.DataModel
 import ru.students.repository.datasource.RetrofitImplementation
@@ -12,8 +13,15 @@ import ru.students.repository.repository.RepositoryLocal
 import ru.students.repository.room.HistoryDataBase
 import ru.students.vocabulary.view.main.MainInteractor
 import ru.students.vocabulary.view.main.MainViewModel
-import ru.students.historyscreen.HistoryInteractor
-import ru.students.historyscreen.HistoryViewModel
+
+
+
+fun injectDependencies() = loadModules
+
+private val loadModules by lazy {
+    // Функция библиотеки Koin
+    loadKoinModules(listOf(application, mainScreen))
+}
 
 val application = module {
     // single указывает, что БД должна быть в единственном экземпляре
@@ -27,9 +35,4 @@ val application = module {
 val mainScreen = module {
     factory { MainInteractor(get(), get()) }
     factory { MainViewModel(get()) }
-}
-
-val historyScreen = module {
-    factory { ru.students.historyscreen.HistoryViewModel(get()) }
-    factory { ru.students.historyscreen.HistoryInteractor(get(), get()) }
 }

@@ -1,7 +1,7 @@
 package ru.students.vocabulary.view.main
 
 import androidx.lifecycle.LiveData
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

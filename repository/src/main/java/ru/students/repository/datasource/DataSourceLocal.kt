@@ -1,6 +1,6 @@
 package ru.students.repository.datasource
 
-import ru.students.vocabulary.model.data.AppState
+import ru.students.model.data.AppState
 
 interface DataSourceLocal<T> : DataSource<T> {
 
