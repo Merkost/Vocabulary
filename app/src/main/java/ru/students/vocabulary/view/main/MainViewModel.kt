@@ -5,11 +5,10 @@ import ru.students.vocabulary.model.data.AppState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.students.vocabulary.utils.parseOnlineSearchResults
-import ru.students.vocabulary.viewmodel.BaseViewModel
+import ru.students.repository.utils.parseOnlineSearchResults
 
 class MainViewModel(private val interactor: MainInteractor) :
-    BaseViewModel<AppState>() {
+    ru.students.core.viewmodel.BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
 

@@ -12,17 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.students.vocabulary.model.data.AppState
 import ru.students.vocabulary.model.data.DataModel
-import ru.students.vocabulary.utils.network.isOnline
-import ru.students.vocabulary.view.base.BaseActivity
 import ru.students.vocabulary.view.main.adapter.MainAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_layout.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.students.vocabulary.R
-import ru.students.vocabulary.utils.convertMeaningsToString
-import ru.students.vocabulary.view.main.history.HistoryActivity
+import ru.students.repository.utils.convertMeaningsToString
+import ru.students.historyscreen.HistoryActivity
+import ru.students.utils.network.isOnline
 
-class MainActivity : BaseActivity<AppState, MainInteractor>() {
+class MainActivity : ru.students.core.BaseActivity<AppState, MainInteractor>() {
 
     override lateinit var model: MainViewModel
     // Передаём в адаптер слушатель нажатия на список
@@ -42,7 +41,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                         this@MainActivity,
                         data.text!!,
                         convertMeaningsToString(data.meanings!!),
-                        data.meanings[0].imageUrl
+                        data.meanings!![0].imageUrl
                     )
                 )
 
@@ -75,7 +74,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_history -> {
-                startActivity(Intent(this, HistoryActivity::class.java))
+                startActivity(Intent(this, ru.students.historyscreen.HistoryActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
